@@ -9,37 +9,52 @@ interface State {
 }
 
 interface Props {
-    time: number; // input time, but in seconds from ../page.tsx
+    time: number;
+    active: boolean;
+    resetKey: number;
 }
 
-const Timer: React.FC<Props> = ({ time }) => {
+const Timer: React.FC<Props> = ({ time, active, resetKey }) => {
     const [state, setState] = React.useState<State>({
         time,
-        seconds: time - Math.floor((time - 1) / 60) * 60 - 1,
-        minutes: Math.floor((time - 1) / 60),
+        seconds: time % 60,
+        minutes: Math.floor(time / 60),
     });
 
     React.useEffect(() => {
-        const interval = setInterval(() => {
-            if (state.time > 0) {
-                setState({
-                    time: state.time - 1,
-                    seconds: state.time - Math.floor((state.time - 1) / 60) * 60 - 1,
-                    minutes: Math.floor((state.time - 1) / 60),
-                });
-            } else {
-                clearInterval(interval);
-            }
-        }, 1000);
+        setState({
+            time,
+            seconds: time % 60,
+            minutes: Math.floor(time / 60),
+        });
+    }, [time, resetKey]);
 
-        // Cleanup function to clear interval when component unmounts
-        return () => clearInterval(interval);
-    }, [state.time]);
+    React.useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (active && state.time > 0) {
+            interval = setInterval(() => {
+                setState((prevState) => {
+                    if (prevState.time <= 0) {
+                        clearInterval(interval);
+                        return prevState;
+                    }
+                    return {
+                        time: prevState.time - 1,
+                        seconds: (prevState.time - 1) % 60,
+                        minutes: Math.floor((prevState.time - 1) / 60),
+                    };
+                });
+            }, 1000);
+        } return () => clearInterval(interval);
+    }, [active]);
 
     return (
-        <h2 className="flex text-9xl font-bold text-center font-[family-name:var(--inter)]"> 
-            {state.minutes} : {state.seconds < 10 ? `0${state.seconds}` : state.seconds}
-        </h2>
+        <div className="flex items-center text-center justify-center w-full">
+            <h2 className="text-9xl font-bold text-center min-w-[300px]">
+                {`${state.minutes}:${state.seconds < 10 ? `0${state.seconds}` : state.seconds}`}
+            </h2>
+        </div>
     );
 }
 
