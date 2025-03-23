@@ -4,7 +4,6 @@ import Image from "next/image";
 import Timer from "../components/timer";
 import { useState } from "react";
 import clsx from "clsx";
-import { VscDebugRestart } from "react-icons/vsc";
 
 export default function Home() {
   const [isTimerActive, setIsTimerActive] = useState(false);
