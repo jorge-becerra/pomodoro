@@ -51,7 +51,7 @@ const Timer: React.FC<Props> = ({ time, active, resetKey }) => {
 
     return (
         <div className="flex items-center text-center justify-center w-full">
-            <h2 className="text-9xl font-bold text-center min-w-[300px]">
+            <h2 className="text-8xl md:text-9xl font-bold text-center min-w-[300px]">
                 {`${state.minutes}:${state.seconds < 10 ? `0${state.seconds}` : state.seconds}`}
             </h2>
         </div>

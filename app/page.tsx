@@ -46,7 +46,7 @@ export default function Home() {
             Long Break
           </button>
         </div>
-        <div className="text-center gap-4">
+        <div className="text-center gap-4 text-sm">
           <Timer time={currentTime} active={isTimerActive} resetKey={resetKey} />
         </div>
         <div className="flex justify-center w-full gap-4">
@@ -90,8 +90,9 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/github-mark-white.svg"
-            alt="File icon"
+            className="dark:invert"
+            src="/github-mark-black.svg"
+            alt="Github icon"
             width={16}
             height={16}
           />
