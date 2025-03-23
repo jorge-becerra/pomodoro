@@ -4,6 +4,7 @@ import Image from "next/image";
 import Timer from "../components/timer";
 import { useState } from "react";
 import clsx from "clsx";
+import { VscDebugRestart } from "react-icons/vsc";
 
 export default function Home() {
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -46,7 +47,7 @@ export default function Home() {
             Long Break
           </button>
         </div>
-        <div className="text-center gap-4 text-sm">
+        <div className="text-center gap-4">
           <Timer time={currentTime} active={isTimerActive} resetKey={resetKey} />
         </div>
         <div className="flex justify-center w-full gap-4">
@@ -73,10 +74,11 @@ export default function Home() {
           >
             <Image
             aria-hidden
-            src="/restart_icon.svg"
+            className="dark:invert"
+            src="/restart.svg"
             alt="Restart icon"
-            width={16}
-            height={16}
+            width={20}
+            height={20}
             />
           </button>
         </div>
@@ -90,7 +92,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            className="dark:invert"
+            className="dark:invert animate-spin-slow"
             src="/github-mark-black.svg"
             alt="Github icon"
             width={16}
