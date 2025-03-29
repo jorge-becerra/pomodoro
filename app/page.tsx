@@ -40,7 +40,6 @@ export default function Home() {
     const darkMode = isColorDark(backgroundColor);
     setIsDarkMode(darkMode);
     
-    // Update DOM
     document.body.style.backgroundColor = backgroundColor;
     localStorage.setItem('backgroundColor', backgroundColor);
     
@@ -57,7 +56,7 @@ export default function Home() {
 
   return (
     <div className={`grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 ${isDarkMode ? 'text-white' : 'text-black'}`}>
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+      <main className="flex flex-col gap-[32px] row-start-2 items-center w-full">
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <button
             className={clsx(
@@ -96,7 +95,7 @@ export default function Home() {
             Long Break
           </button>
         </div>
-        <div className="text-center gap-4">
+        <div className="flex justify-center w-full">
           <Timer time={currentTime} active={isTimerActive} resetKey={resetKey} isDark={isDarkMode} />
         </div>
         <div className="flex justify-center w-full gap-4">
