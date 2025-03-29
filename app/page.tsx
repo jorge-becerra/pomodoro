@@ -104,12 +104,12 @@ export default function Home() {
         <div className="flex justify-center w-full gap-4">
           <button
             className={clsx(
-              "rounded-full border border-solid transition-colors flex items-center justify-center gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto",
+              "rounded-full border border-none transition-colors flex items-center justify-center gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto",
               {
                 "bg-white text-black hover:bg-[#A6FFA1]": isDarkMode,
                 "bg-zinc-900 text-white hover:bg-[#75B371]": !isDarkMode,
-                "hover:bg-[#FCF75E]": isTimerActive && !isDarkMode,
-                "hover:bg-[#BDB746]": isTimerActive && isDarkMode
+                "hover:text-black hover:bg-[#ffd800]": isTimerActive && !isDarkMode,
+                "hover:bg-[#FCF75E]": isTimerActive && isDarkMode
               }
             )}
             onClick={() => setIsTimerActive(!isTimerActive)}
