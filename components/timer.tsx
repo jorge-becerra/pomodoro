@@ -67,7 +67,7 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
         }
 
         return () => {
-            if (animationFrameId) {
+            if (animationFrameId !== undefined) {
                 cancelAnimationFrame(animationFrameId);
             }
         };
