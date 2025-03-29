@@ -12,7 +12,7 @@ interface TimerProps {
     time: number;
     active: boolean;
     resetKey: number;
-    isDark?: boolean;
+    isDark: boolean;
 }
 
 const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
@@ -47,13 +47,14 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
                     };
                 });
             }, 1000);
-        } return () => clearInterval(interval);
+        } 
+        return () => clearInterval(interval);
     }, [active]);
 
     return (
-        <div className={`${isDark ? 'text-white' : 'text-black'} grid place-items-center w-full`}>
+        <div className={`${isDark ? 'text-white' : 'text-black'} grid place-items-center w-full transition-colors duration-300`}>
             <h2 className="inline-block text-center text-8xl md:text-9xl font-bold">
-                {`${state.minutes}:${state.seconds < 10 ? `0${state.seconds}` : state.seconds}`}
+                {state.minutes}:{state.seconds < 10 ? '0' : ''}{state.seconds}
             </h2>
         </div>
     );
