@@ -13,17 +13,15 @@ export default function Home() {
   const [lastSetTime, setLastSetTime] = useState(1500); // Add this state to track last set time
   const [resetKey, setResetKey] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState(() => {
-    if (typeof window === 'undefined') return '#000000';
-    const savedColor = localStorage.getItem('backgroundColor') || '#000000';
-    document.body.style.backgroundColor = savedColor;
-    return savedColor;
-  });
+  const [backgroundColor, setBackgroundColor] = useState('#000000');
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    return isColorDark(localStorage.getItem('backgroundColor') || '#000000');
-  });
+  // Load saved color after initial render
+  useEffect(() => {
+    const savedColor = localStorage.getItem('backgroundColor') ?? '#000000';
+    setBackgroundColor(savedColor);
+    setIsDarkMode(isColorDark(savedColor));
+  }, []);
 
   const setTimerMode = (time: number) => {
     setLastSetTime(time);
@@ -77,8 +75,8 @@ export default function Home() {
             className={clsx(
               "rounded-full border border-solid transition-colors flex items-center justify-center gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]",
               {
-                "border-black/[.08] hover:bg-gray-100": !isDarkMode,
-                "border-white/[.145] hover:bg-zinc-900": isDarkMode
+                "border-black/[.08] hover:bg-gray-100 bg-gray-50": !isDarkMode,
+                "border-white/[.145] hover:bg-zinc-800 bg-zinc-900": isDarkMode
               }
             )}
             onClick={() => setTimerMode(300)}
@@ -89,8 +87,8 @@ export default function Home() {
             className={clsx(
               "rounded-full border border-solid transition-colors flex items-center justify-center gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]",
               {
-                "border-black/[.08] hover:bg-gray-100": !isDarkMode,
-                "border-white/[.145] hover:bg-zinc-900": isDarkMode
+                "border-black/[.08] hover:bg-gray-100 bg-gray-50": !isDarkMode,
+                "border-white/[.145] hover:bg-zinc-800 bg-zinc-900": isDarkMode
               }
             )}
             onClick={() => setTimerMode(900)}
@@ -104,10 +102,10 @@ export default function Home() {
         <div className="flex justify-center w-full gap-4">
           <button
             className={clsx(
-              "rounded-full border border-none transition-colors flex items-center justify-center gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto",
+              "rounded-full transition-colors flex items-center justify-center gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto",
               {
                 "bg-white text-black hover:bg-[#A6FFA1]": isDarkMode,
-                "bg-zinc-900 text-white hover:bg-[#75B371]": !isDarkMode,
+                "border-none bg-zinc-900 text-white hover:bg-[#75B371]": !isDarkMode,
                 "hover:text-black hover:bg-[#ffd800]": isTimerActive && !isDarkMode,
                 "hover:bg-[#FCF75E]": isTimerActive && isDarkMode
               }
@@ -152,6 +150,7 @@ export default function Home() {
             onClose={() => setIsSidebarOpen(false)}
             onColorChange={setBackgroundColor}
             currentColor={backgroundColor}
+            isDarkMode={isDarkMode}
           />
         </div>
       </main>
@@ -164,7 +163,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            className="dark:invert animate-spin-slow"
+            className={`${isDarkMode ? 'invert' : ''}`}
             src="/github-logo.svg"
             alt="Github icon"
             width={16}
