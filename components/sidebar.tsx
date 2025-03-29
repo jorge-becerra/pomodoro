@@ -50,7 +50,16 @@ export default function SettingsSidebar({ isOpen, onClose, onColorChange, curren
                 ref={sidebarRef}
             >
                 <div className="p-6">
-                    <h2 className="text-xl font-bold mb-6">Settings</h2>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-xl font-bold">Settings</h2>
+                        <button 
+                            onClick={onClose}
+                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-800 transition-colors"
+                            aria-label="Close settings"
+                        >
+                            <span className="text-xl font-medium">×</span>
+                        </button>
+                    </div>
                     <div className="space-y-6">
                         <div className="block">
                             <span className="block mb-3">Background Color</span>
