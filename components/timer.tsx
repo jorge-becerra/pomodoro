@@ -8,13 +8,14 @@ interface State {
     minutes: number;
 }
 
-interface Props {
+interface TimerProps {
     time: number;
     active: boolean;
     resetKey: number;
+    isDark?: boolean;
 }
 
-const Timer: React.FC<Props> = ({ time, active, resetKey }) => {
+const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
     const [state, setState] = React.useState<State>({
         time,
         seconds: time % 60,
@@ -50,7 +51,7 @@ const Timer: React.FC<Props> = ({ time, active, resetKey }) => {
     }, [active]);
 
     return (
-        <div className="grid place-items-center w-full">
+        <div className={`${isDark ? 'text-white' : 'text-black'} grid place-items-center w-full`}>
             <h2 className="inline-block text-center text-8xl md:text-9xl font-bold">
                 {`${state.minutes}:${state.seconds < 10 ? `0${state.seconds}` : state.seconds}`}
             </h2>
