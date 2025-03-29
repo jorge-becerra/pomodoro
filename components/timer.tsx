@@ -21,6 +21,9 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
         seconds: time % 60,
         minutes: Math.floor(time / 60),
     });
+    
+    const startTimeRef = React.useRef<number | null>(null);
+    const initialTimeRef = React.useRef<number>(time);
 
     React.useEffect(() => {
         setState({
@@ -28,33 +31,52 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
             seconds: time % 60,
             minutes: Math.floor(time / 60),
         });
+        initialTimeRef.current = time;
+        startTimeRef.current = null;
     }, [time, resetKey]);
 
     React.useEffect(() => {
-        let interval: NodeJS.Timeout;
+        let animationFrameId: number;
 
-        if (active && state.time > 0) {
-            interval = setInterval(() => {
-                setState((prevState) => {
-                    if (prevState.time <= 0) {
-                        clearInterval(interval);
-                        return prevState;
-                    }
-                    return {
-                        time: prevState.time - 1,
-                        seconds: (prevState.time - 1) % 60,
-                        minutes: Math.floor((prevState.time - 1) / 60),
-                    };
+        const updateTimer = () => {
+            if (!startTimeRef.current && active) {
+                startTimeRef.current = performance.now();
+            }
+
+            if (active && startTimeRef.current !== null) {
+                const currentTime = performance.now();
+                const elapsedSeconds = Math.floor((currentTime - startTimeRef.current) / 1000);
+                const newTime = Math.max(0, initialTimeRef.current - elapsedSeconds);
+
+                setState({
+                    time: newTime,
+                    seconds: newTime % 60,
+                    minutes: Math.floor(newTime / 60),
                 });
-            }, 1000);
-        } 
-        return () => clearInterval(interval);
+
+                if (newTime > 0) {
+                    animationFrameId = requestAnimationFrame(updateTimer);
+                }
+            }
+        };
+
+        if (active) {
+            animationFrameId = requestAnimationFrame(updateTimer);
+        } else {
+            startTimeRef.current = null;
+        }
+
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
     }, [active]);
 
     return (
         <div className={`${isDark ? 'text-white' : 'text-black'} grid place-items-center w-full transition-colors duration-300`}>
             <h2 className="inline-block text-center text-8xl md:text-9xl font-bold">
-                {state.minutes}:{state.seconds < 10 ? '0' : ''}{state.seconds}
+                {state.minutes < 10 ? '0' : ''}{state.minutes}:{state.seconds < 10 ? '0' : ''}{state.seconds}
             </h2>
         </div>
     );
