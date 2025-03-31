@@ -29,7 +29,7 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
     const confettiRef = React.useRef<CreateTypes | null>(null);
 
     const fireConfetti = () => {
-        if (confettiRef.current) {
+        if (confettiRef.current && initialTimeRef.current === 1500) { // Only fire confetti if it was a focus timer (25 minutes)
             confettiRef.current({
                 particleCount: 100,
                 spread: 70,
