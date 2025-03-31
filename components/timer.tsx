@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import ReactCanvasConfetti from 'react-canvas-confetti';
+import type { CreateTypes } from 'canvas-confetti';
 
 interface State {
     time: number;
@@ -24,6 +26,17 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
     
     const startTimeRef = React.useRef<number | null>(null);
     const initialTimeRef = React.useRef<number>(time);
+    const confettiRef = React.useRef<CreateTypes | null>(null);
+
+    const fireConfetti = () => {
+        if (confettiRef.current) {
+            confettiRef.current({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    };
 
     React.useEffect(() => {
         setState({
@@ -56,6 +69,8 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
 
                 if (newTime > 0) {
                     animationFrameId = requestAnimationFrame(updateTimer);
+                } else if (newTime === 0) {
+                    fireConfetti();
                 }
             }
         };
@@ -74,10 +89,21 @@ const Timer: React.FC<TimerProps> = ({ time, active, resetKey, isDark }) => {
     }, [active]);
 
     return (
-        <div className={`${isDark ? 'text-white' : 'text-black'} grid place-items-center w-full transition-colors duration-300`}>
+        <div className={`${isDark ? 'text-white' : 'text-black'} grid place-items-center w-full transition-colors duration-300 relative`}>
             <h2 className="inline-block text-center text-8xl md:text-9xl font-bold">
                 {state.minutes < 10 ? '0' : ''}{state.minutes}:{state.seconds < 10 ? '0' : ''}{state.seconds}
             </h2>
+            <ReactCanvasConfetti
+                onInit={({ confetti }) => (confettiRef.current = confetti)}
+                style={{
+                    position: 'fixed',
+                    pointerEvents: 'none',
+                    width: '100%',
+                    height: '100%',
+                    top: 0,
+                    left: 0
+                }}
+            />
         </div>
     );
 }
