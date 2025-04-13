@@ -42,6 +42,9 @@ export default function SettingsSidebar({ isOpen, onClose, onColorChange, curren
             
             {/* Sidebar */}
             <div 
+                id="settings-sidebar"                
+                aria-label="Settings"
+                aria-modal="true"
                 className="fixed right-0 top-0 h-full z-50 w-full sm:w-1/2 lg:w-1/3 shadow-xl transform transition-all duration-500 ease-out bg-zinc-950 text-white"
                 style={{
                     transform: isOpen ? 'translateX(0)' : 'translateX(100%)',

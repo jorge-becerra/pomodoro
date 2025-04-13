@@ -110,6 +110,7 @@ export default function Home() {
               }
             )}
             onClick={() => setIsTimerActive(!isTimerActive)}
+            aria-label={isTimerActive ? "Pause Timer" : "Start Timer"}
           >
             <p className={clsx({"hidden": isTimerActive})}>
               Start Timer
@@ -119,30 +120,38 @@ export default function Home() {
             </p>
           </button>
 
-          <button className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#FFBF00] dark:hover:bg-[#FFBF00] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
+          <button 
+            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#FFBF00] dark:hover:bg-[#FFBF00] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
             onClick={resetTimer}
+            aria-label="Reset Timer"
           >
             <Image
-            aria-hidden
-            className="dark:invert"
-            src="/restart.svg"
-            alt="Restart icon"
-            width={20}
-            height={20}
+              src="/restart.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="dark:invert"
+              aria-hidden="true"
             />
+            <span className="sr-only">Reset Timer</span>
           </button>
+
           <button 
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-blue-500 dark:hover:bg-blue-500 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
             onClick={() => setIsSidebarOpen(true)}
+            aria-label="Open Settings"
+            aria-expanded={isSidebarOpen}
+            aria-controls="settings-sidebar"
           >
             <Image
-            aria-hidden
-            className="dark:invert"
-            src="/settings.svg"
-            alt="Gear icon"
-            width={24}
-            height={24}
+              src="/settings.svg"
+              alt=""
+              width={24}
+              height={24}
+              className="dark:invert"
+              aria-hidden="true"
             />
+            <span className="sr-only">Open Settings</span>
           </button>
           <SettingsSidebar
             isOpen={isSidebarOpen}
